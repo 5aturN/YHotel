@@ -1,0 +1,1 @@
+"""ЯОтель booking service."""
