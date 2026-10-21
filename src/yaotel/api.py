@@ -2,6 +2,7 @@
 
 import hmac
 from datetime import date
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import (
@@ -15,7 +16,9 @@ from fastapi import (
     Response,
     status,
 )
+from fastapi.responses import FileResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -56,6 +59,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = runtime_settings
     app.state.engine = engine
     app.state.session_factory = session_factory
+    static_dir = Path(__file__).with_name("static")
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
     bearer_scheme = HTTPBearer(auto_error=False)
 
     def get_session(request: Request):
@@ -66,6 +71,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             session.close()
 
     DbSession = Annotated[Session, Depends(get_session)]
+
+    @app.get("/", include_in_schema=False)
+    def customer_page() -> FileResponse:
+        return FileResponse(static_dir / "index.html")
 
     def get_auth_secret() -> str:
         secret = runtime_settings.auth_secret

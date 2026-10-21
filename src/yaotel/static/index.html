@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f4">
+    <title>ЯОтель | Бронирование</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="ЯОтель, главная">
+        <span class="brand-mark" aria-hidden="true">Я</span>
+        <span>ЯОтель</span>
+      </a>
+      <nav class="topnav" aria-label="Основная навигация">
+        <button class="nav-button is-active" id="rooms-tab" type="button">Номера</button>
+        <button class="nav-button" id="bookings-tab" type="button">Мои бронирования</button>
+      </nav>
+      <div class="api-state" id="api-state" role="status">
+        <span class="state-dot"></span>
+        <span>Проверяем API</span>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">ЯОТЕЛЬ · БРОНИРОВАНИЕ</p>
+          <h1 id="page-title">Найдите номер для поездки</h1>
+          <p class="heading-copy">Выберите даты и количество гостей, чтобы посмотреть доступные варианты.</p>
+        </div>
+      </section>
+
+      <form class="search-bar" id="search-form">
+        <label class="field">
+          <span>Заезд</span>
+          <input id="check-in" name="check_in" type="date" required>
+        </label>
+        <label class="field">
+          <span>Выезд</span>
+          <input id="check-out" name="check_out" type="date" required>
+        </label>
+        <label class="field guests-field">
+          <span>Гости</span>
+          <select id="guests" name="guests">
+            <option value="1">1 гость</option>
+            <option value="2" selected>2 гостя</option>
+            <option value="3">3 гостя</option>
+            <option value="4">4 гостя</option>
+            <option value="5">5 гостей</option>
+            <option value="6">6 гостей</option>
+            <option value="7">7 гостей</option>
+            <option value="8">8 гостей</option>
+            <option value="9">9 гостей</option>
+            <option value="10">10 гостей</option>
+          </select>
+        </label>
+        <button class="button button-primary search-button" type="submit">Найти номера</button>
+      </form>
+
+      <div class="content-grid">
+        <section class="main-panel" id="rooms-view" aria-labelledby="results-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="results-title">Доступные номера</h2>
+              <p id="results-summary" class="muted">Загружаем варианты</p>
+            </div>
+            <button class="text-button" id="refresh-rooms" type="button">Обновить</button>
+          </div>
+          <div class="room-list" id="room-list" aria-live="polite">
+            <div class="loading-row"><span class="spinner"></span>Ищем доступные номера</div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <section class="account-section" aria-labelledby="account-title">
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow">АККАУНТ</p>
+                <h2 id="account-title">Войдите в профиль</h2>
+              </div>
+            </div>
+            <div id="account-guest">
+              <div class="segmented" role="group" aria-label="Действие с аккаунтом">
+                <button class="segment is-selected" id="login-mode" type="button">Вход</button>
+                <button class="segment" id="register-mode" type="button">Регистрация</button>
+              </div>
+              <form id="account-form" class="account-form">
+                <label class="field">
+                  <span>Email</span>
+                  <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+                </label>
+                <label class="field">
+                  <span>Пароль</span>
+                  <input id="password" name="password" type="password" autocomplete="current-password" minlength="12" required>
+                </label>
+                <p class="field-hint" id="password-hint">Минимум 12 символов.</p>
+                <button class="button button-dark full-width" id="account-submit" type="submit">Войти</button>
+              </form>
+            </div>
+            <div id="account-member" class="member-state" hidden>
+              <span class="member-avatar" aria-hidden="true">Я</span>
+              <div class="member-details">
+                <strong>Вы вошли</strong>
+                <span id="member-email"></span>
+              </div>
+              <button class="text-button" id="logout" type="button">Выйти</button>
+            </div>
+            <p class="form-message" id="account-message" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="trip-summary" aria-labelledby="trip-title">
+            <p class="eyebrow">ВАША ПОЕЗДКА</p>
+            <h2 id="trip-title">Параметры поиска</h2>
+            <dl class="summary-list">
+              <div><dt>Заезд</dt><dd id="summary-check-in">—</dd></div>
+              <div><dt>Выезд</dt><dd id="summary-check-out">—</dd></div>
+              <div><dt>Гости</dt><dd id="summary-guests">2</dd></div>
+            </dl>
+            <p class="summary-note">Итоговая стоимость будет рассчитана при оформлении бронирования.</p>
+          </section>
+        </aside>
+      </div>
+
+      <section class="main-panel bookings-view" id="bookings-view" aria-labelledby="bookings-title" hidden>
+        <div class="section-heading">
+          <div>
+            <h2 id="bookings-title">Мои бронирования</h2>
+            <p class="muted">Список активных и завершенных поездок</p>
+          </div>
+          <button class="text-button" id="refresh-bookings" type="button">Обновить</button>
+        </div>
+        <div id="booking-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
