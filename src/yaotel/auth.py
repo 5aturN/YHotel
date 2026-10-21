@@ -1,4 +1,4 @@
-"""Password hashing and access-token helpers."""
+"""Хеширование паролей и функции для работы с токенами доступа."""
 
 from datetime import UTC, datetime, timedelta
 

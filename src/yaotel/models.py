@@ -1,4 +1,4 @@
-"""Persistence models for rooms and bookings."""
+"""Модели данных пользователей, номеров и бронирований."""
 
 from datetime import UTC, date, datetime
 
@@ -7,7 +7,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
-    """Base class for SQLAlchemy models."""
+    """Базовый класс моделей SQLAlchemy."""
 
 
 class User(Base):

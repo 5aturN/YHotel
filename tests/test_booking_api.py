@@ -1,4 +1,4 @@
-"""Integration tests for the initial room booking API."""
+"""Интеграционные тесты сценариев бронирования номеров."""
 
 import unittest
 from unittest.mock import patch

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "yaotel"
 version = "0.2.0"
-description = "FastAPI service for hotel room availability and booking management"
+description = "Сервис бронирования гостиничных номеров на FastAPI"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

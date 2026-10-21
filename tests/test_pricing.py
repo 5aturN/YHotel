@@ -1,4 +1,4 @@
-"""Unit tests for the core nightly-price calculation."""
+"""Модульные тесты расчета стоимости проживания по ночам."""
 
 import unittest
 from datetime import date

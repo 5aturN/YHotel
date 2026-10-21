@@ -11,6 +11,13 @@ const roomImages = {
   Suite: "/static/rooms/suite.png",
 };
 
+const roomCategoryNames = {
+  Standard: "Стандарт",
+  Deluxe: "Делюкс",
+  Family: "Семейный",
+  Suite: "Люкс",
+};
+
 const elements = {
   apiState: document.querySelector("#api-state"),
   searchForm: document.querySelector("#search-form"),
@@ -150,7 +157,7 @@ function roomCard(room) {
   const image = document.createElement("img");
   image.className = "room-photo";
   image.src = roomImages[room.category] || roomImages.Standard;
-  image.alt = `Интерьер номера категории ${room.category}`;
+  image.alt = `Интерьер номера категории ${roomCategoryNames[room.category] || room.category}`;
   image.loading = "lazy";
   image.onerror = () => { image.hidden = true; };
 
@@ -161,7 +168,7 @@ function roomCard(room) {
   number.textContent = `Номер ${room.number}`;
   const name = document.createElement("h3");
   name.className = "room-name";
-  name.textContent = room.category;
+  name.textContent = roomCategoryNames[room.category] || room.category;
   const meta = document.createElement("div");
   meta.className = "room-meta";
   const capacity = document.createElement("span");

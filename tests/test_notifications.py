@@ -1,4 +1,4 @@
-"""SMTP notification integration tests using a local capture server."""
+"""Интеграционные тесты SMTP-уведомлений с локальным сервером приема."""
 
 import socket
 import unittest

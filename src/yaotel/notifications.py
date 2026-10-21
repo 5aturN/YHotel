@@ -1,4 +1,4 @@
-"""SMTP delivery for booking confirmations."""
+"""Отправка подтверждений бронирования по SMTP."""
 
 import logging
 import smtplib

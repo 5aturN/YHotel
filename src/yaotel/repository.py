@@ -1,4 +1,4 @@
-"""Data access for rooms and bookings."""
+"""Доступ к данным номеров и бронирований."""
 
 from datetime import date
 
@@ -14,7 +14,7 @@ READY_ROOM_STATUSES = ("clean", "inspected")
 def list_available_rooms(
     session: Session, check_in: date, check_out: date, guests: int
 ) -> list[Room]:
-    """Return ready rooms with enough capacity and no overlapping active booking."""
+    """Возвращает готовые номера нужной вместимости без пересекающихся бронирований."""
     overlapping_booking = (
         select(Booking.id)
         .where(
@@ -38,7 +38,7 @@ def list_available_rooms(
 
 
 def get_room_for_booking(session: Session, room_id: int) -> Room | None:
-    """Lock the selected room row while a booking is being validated and inserted."""
+    """Блокирует выбранный номер на время проверки и создания бронирования."""
     return session.scalar(select(Room).where(Room.id == room_id).with_for_update())
 
 

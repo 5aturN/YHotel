@@ -1,4 +1,4 @@
-"""Account registration and login API tests."""
+"""Тесты API регистрации и входа пользователей."""
 
 import unittest
 

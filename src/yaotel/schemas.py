@@ -1,4 +1,4 @@
-"""Validated request and response models for the initial booking API."""
+"""Модели проверки запросов и ответов API бронирования."""
 
 import re
 from datetime import date, datetime

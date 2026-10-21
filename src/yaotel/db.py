@@ -1,4 +1,4 @@
-"""Database engine and session setup."""
+"""Настройка движка базы данных и сессий."""
 
 from pathlib import Path
 
@@ -11,7 +11,7 @@ from yaotel.models import Base, Room
 
 
 def create_database(database_url: str) -> tuple[Engine, sessionmaker[Session]]:
-    """Create an engine, schema, and session factory for a database URL."""
+    """Создает движок, схему и фабрику сессий для указанной базы данных."""
     if database_url.startswith("sqlite:///./"):
         Path(database_url.removeprefix("sqlite:///./")).parent.mkdir(parents=True, exist_ok=True)
 
@@ -36,7 +36,7 @@ def create_database(database_url: str) -> tuple[Engine, sessionmaker[Session]]:
 
 
 def seed_rooms(factory: sessionmaker[Session]) -> None:
-    """Insert deterministic demo rooms only when the catalog is empty."""
+    """Добавляет демонстрационные номера, только если каталог пуст."""
     with factory() as session:
         if session.query(Room.id).first() is not None:
             return

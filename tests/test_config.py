@@ -1,4 +1,4 @@
-"""Runtime configuration validation tests."""
+"""Тесты проверки настроек приложения."""
 
 import os
 import unittest

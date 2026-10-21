@@ -1,4 +1,4 @@
-"""Smoke tests for the customer-facing booking page."""
+"""Проверки пользовательской страницы бронирования."""
 
 import unittest
 
@@ -35,6 +35,8 @@ class CustomerPageTests(unittest.TestCase):
         self.assertIn(".room-card", stylesheet.text)
         self.assertEqual(script.status_code, 200)
         self.assertIn("/api/rooms/availability", script.text)
+        for category_name in ("Стандарт", "Делюкс", "Семейный", "Люкс"):
+            self.assertIn(category_name, script.text)
         for room_image in room_images:
             self.assertEqual(room_image.status_code, 200)
             self.assertEqual(room_image.headers["content-type"], "image/png")

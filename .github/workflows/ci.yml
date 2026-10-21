@@ -1,4 +1,4 @@
-name: Build and Test
+name: Сборка и проверка
 
 on:
   push:
@@ -16,26 +16,26 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out source
+      - name: Получить исходный код
         uses: actions/checkout@v5
-      - name: Set up Python
+      - name: Настроить Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
-      - name: Install project and development dependencies
+      - name: Установить проект и средства разработки
         run: python -m pip install -e ".[dev]"
-      - name: Compile Python modules
+      - name: Проверить компиляцию модулей Python
         run: python -m compileall -q src
-      - name: Check code style
+      - name: Проверить стиль кода
         run: ruff check src tests
-      - name: Scan source code
+      - name: Проверить безопасность исходного кода
         run: bandit -r src/yaotel -ll
-      - name: Audit dependencies
+      - name: Проверить зависимости на уязвимости
         run: pip-audit -r requirements-dev.txt
-      - name: Run unittest suite
+      - name: Запустить тесты unittest
         run: python -m unittest discover -s tests -v
-      - name: Run pytest suite
+      - name: Запустить тесты pytest
         run: python -m pytest -q
-      - name: Build container image
+      - name: Собрать образ контейнера
         run: docker build --tag yaotel:${{ github.sha }} .

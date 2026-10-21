@@ -1,11 +1,11 @@
-"""Pricing rules for nightly hotel bookings."""
+"""Правила расчета стоимости проживания по ночам."""
 
 from datetime import date, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
 
 class PriceCalculator:
-    """Calculate a lodging total in kopecks without floating-point drift."""
+    """Рассчитывает стоимость проживания в копейках без ошибок округления."""
 
     WEEKEND_MULTIPLIER = Decimal("1.15")
     WEEKEND_NIGHT_STARTS = frozenset({4, 5})  # Friday and Saturday nights
@@ -14,7 +14,7 @@ class PriceCalculator:
     def calculate_total_kopecks(
         cls, base_price_kopecks: int, check_in: date, check_out: date
     ) -> int:
-        """Return the total for [check_in, check_out), charging each night once."""
+        """Рассчитывает сумму за интервал [заезд, выезд), учитывая каждую ночь один раз."""
         if base_price_kopecks <= 0:
             raise ValueError("Base price must be a positive number of kopecks.")
         if check_out <= check_in:

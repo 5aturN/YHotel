@@ -1,4 +1,4 @@
-"""Application services for booking operations."""
+"""Сервисный слой операций бронирования."""
 
 import uuid
 from datetime import date
@@ -16,27 +16,27 @@ from yaotel.repository import (
 
 
 class BookingConflict(Exception):
-    """Raised when a room is not available for the requested interval."""
+    """Возникает, когда номер недоступен в выбранный период."""
 
 
 class RoomNotFound(Exception):
-    """Raised when the requested room does not exist."""
+    """Возникает, когда выбранный номер не существует."""
 
 
 class BookingNotFound(Exception):
-    """Raised when the requested booking does not exist."""
+    """Возникает, когда бронирование не существует."""
 
 
 class BookingNotOwned(Exception):
-    """Raised when a user attempts to access another user's booking."""
+    """Возникает при попытке получить доступ к чужому бронированию."""
 
 
 class BookingStateConflict(Exception):
-    """Raised when a booking cannot be cancelled in its current state."""
+    """Возникает, когда бронирование нельзя отменить в текущем состоянии."""
 
 
 class BookingService:
-    """Coordinate room availability, price calculation, and booking persistence."""
+    """Координирует поиск номеров, расчет стоимости и сохранение бронирования."""
 
     def __init__(self, session: Session) -> None:
         self.session = session

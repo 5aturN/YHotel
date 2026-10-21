@@ -1,4 +1,4 @@
-"""Runtime configuration loaded from environment or supplied by tests."""
+"""Настройки приложения из переменных окружения или переданных параметров."""
 
 import os
 from dataclasses import dataclass

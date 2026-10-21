@@ -5,12 +5,12 @@
 ЯОтель — модульный HTTP-сервис на FastAPI. Маршруты принимают и проверяют запросы, слой сервисов применяет правила бронирования, репозиторий выполняет запросы SQLAlchemy, а модели хранят пользователей, номера и бронирования. Расчет стоимости вынесен в отдельный модуль.
 
 ```text
-HTTP client
-    -> FastAPI routes and Pydantic schemas
-        -> booking and authentication services
-            -> SQLAlchemy repositories and models
-                -> SQLite or PostgreSQL
-        -> SMTP notification adapter
+HTTP-клиент
+    -> Маршруты FastAPI и схемы Pydantic
+        -> Сервисы бронирования и аутентификации
+            -> Репозитории SQLAlchemy и модели
+                -> SQLite или PostgreSQL
+        -> Модуль SMTP-уведомлений
 ```
 
 ## Каталоги и модули

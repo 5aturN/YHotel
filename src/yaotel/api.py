@@ -1,4 +1,4 @@
-"""HTTP routes for hotel availability, accounts, and bookings."""
+"""HTTP-маршруты для поиска номеров, аккаунтов и бронирований."""
 
 import hmac
 from datetime import date
@@ -48,7 +48,7 @@ from yaotel.services import (
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
-    """Build an app instance with isolated settings and database resources."""
+    """Создает приложение с заданными настройками и подключением к базе данных."""
     runtime_settings = settings or Settings.from_env()
     engine, session_factory = create_database(runtime_settings.database_url)
     app = FastAPI(
@@ -129,7 +129,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             )
         return user
 
-    @app.get("/health", tags=["health"], summary="Check service health")
+    @app.get("/health", tags=["Состояние сервиса"], summary="Проверить состояние сервиса")
     def health() -> dict[str, str]:
         return {"status": "ok"}
 
@@ -137,8 +137,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         "/api/auth/register",
         response_model=UserRead,
         status_code=status.HTTP_201_CREATED,
-        tags=["authentication"],
-        summary="Create a guest account",
+        tags=["Учетная запись"],
+        summary="Создать аккаунт гостя",
     )
     def register_user(request: UserCreate, session: DbSession) -> UserRead:
         get_auth_secret()
@@ -158,8 +158,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.post(
         "/api/auth/login",
         response_model=TokenResponse,
-        tags=["authentication"],
-        summary="Exchange account credentials for an access token",
+        tags=["Учетная запись"],
+        summary="Получить токен доступа по учетным данным",
     )
     def login_user(request: LoginRequest, session: DbSession) -> TokenResponse:
         secret = get_auth_secret()
@@ -191,8 +191,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get(
         "/api/rooms/availability",
         response_model=list[RoomRead],
-        tags=["rooms"],
-        summary="Find rooms available for a stay",
+        tags=["Номера"],
+        summary="Найти свободные номера на выбранные даты",
     )
     def room_availability(
         check_in: Annotated[date, Query()],
@@ -206,8 +206,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         "/api/integrations/rooms/availability",
         response_model=list[RoomRead],
         dependencies=[Depends(require_api_key)],
-        tags=["integrations"],
-        summary="Find available rooms for an authorized integration",
+        tags=["Интеграции"],
+        summary="Найти свободные номера для авторизованной интеграции",
     )
     def integration_room_availability(
         check_in: Annotated[date, Query()],
@@ -221,8 +221,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         "/api/bookings",
         response_model=BookingRead,
         status_code=status.HTTP_201_CREATED,
-        tags=["bookings"],
-        summary="Create a booking for the authenticated guest",
+        tags=["Бронирования"],
+        summary="Создать бронирование для вошедшего гостя",
     )
     def create_booking(
         request: BookingCreate,
@@ -263,8 +263,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get(
         "/api/bookings",
         response_model=list[BookingRead],
-        tags=["bookings"],
-        summary="List bookings owned by the authenticated guest",
+        tags=["Бронирования"],
+        summary="Получить список бронирований гостя",
     )
     def get_bookings(
         session: DbSession,
@@ -278,8 +278,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get(
         "/api/bookings/{booking_id}",
         response_model=BookingRead,
-        tags=["bookings"],
-        summary="Get a booking owned by the authenticated guest",
+        tags=["Бронирования"],
+        summary="Получить бронирование гостя",
     )
     def get_booking(
         booking_id: str,
@@ -300,8 +300,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.delete(
         "/api/bookings/{booking_id}",
         status_code=status.HTTP_204_NO_CONTENT,
-        tags=["bookings"],
-        summary="Cancel a booking owned by the authenticated guest",
+        tags=["Бронирования"],
+        summary="Отменить бронирование гостя",
     )
     def cancel_booking(
         booking_id: str,
