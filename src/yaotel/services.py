@@ -45,9 +45,9 @@ class BookingService:
         self, check_in: date, check_out: date, guests: int
     ):
         if check_out <= check_in:
-            raise ValueError("Check-out date must be later than check-in date.")
+            raise ValueError("Дата выезда должна быть позже даты заезда.")
         if guests < 1:
-            raise ValueError("At least one guest is required.")
+            raise ValueError("Укажите хотя бы одного гостя.")
         return list_available_rooms(self.session, check_in, check_out, guests)
 
     def create_booking(
@@ -60,9 +60,9 @@ class BookingService:
         guests: int,
     ) -> Booking:
         if check_out <= check_in:
-            raise ValueError("Check-out date must be later than check-in date.")
+            raise ValueError("Дата выезда должна быть позже даты заезда.")
         if guests < 1:
-            raise ValueError("At least one guest is required.")
+            raise ValueError("Укажите хотя бы одного гостя.")
 
         try:
             room = get_room_for_booking(self.session, room_id)

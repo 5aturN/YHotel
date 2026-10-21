@@ -12,7 +12,7 @@ def parse_bool(name: str, value: str) -> bool:
         return True
     if normalized in {"0", "false", "no", "off"}:
         return False
-    raise ValueError(f"{name} must be a boolean value.")
+    raise ValueError(f"{name}: значение должно быть логическим.")
 
 
 @dataclass(frozen=True)

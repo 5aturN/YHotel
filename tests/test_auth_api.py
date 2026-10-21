@@ -48,6 +48,10 @@ class AuthenticationApiTests(unittest.TestCase):
 
         self.assertEqual(first.status_code, 201)
         self.assertEqual(duplicate.status_code, 409)
+        self.assertEqual(
+            duplicate.json()["detail"],
+            "Аккаунт с таким адресом электронной почты уже существует.",
+        )
 
     def test_login_returns_bearer_token_and_rejects_incorrect_password(self) -> None:
         payload = {"email": "guest@example.com", "password": "correct-horse-battery-staple"}
@@ -64,6 +68,10 @@ class AuthenticationApiTests(unittest.TestCase):
         )
 
         self.assertEqual(invalid.status_code, 401)
+        self.assertEqual(
+            invalid.json()["detail"],
+            "Неверный адрес электронной почты или пароль.",
+        )
         self.assertEqual(valid.status_code, 200)
         self.assertEqual(valid.json()["token_type"], "bearer")
         self.assertEqual(bookings.status_code, 200)

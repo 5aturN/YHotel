@@ -16,9 +16,9 @@ class PriceCalculator:
     ) -> int:
         """Рассчитывает сумму за интервал [заезд, выезд), учитывая каждую ночь один раз."""
         if base_price_kopecks <= 0:
-            raise ValueError("Base price must be a positive number of kopecks.")
+            raise ValueError("Базовая стоимость должна быть положительным числом копеек.")
         if check_out <= check_in:
-            raise ValueError("Check-out date must be later than check-in date.")
+            raise ValueError("Дата выезда должна быть позже даты заезда.")
 
         total = Decimal(0)
         night = check_in

@@ -64,6 +64,10 @@ class BookingApiTests(unittest.TestCase):
             params={"check_in": "2030-01-07", "check_out": "2030-01-04", "guests": 2},
         )
         self.assertEqual(response.status_code, 422)
+        self.assertEqual(
+            response.json()["detail"],
+            "Дата выезда должна быть позже даты заезда.",
+        )
 
     def test_booking_requires_authentication(self) -> None:
         response = self.client.post(
@@ -76,6 +80,7 @@ class BookingApiTests(unittest.TestCase):
             },
         )
         self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json()["detail"], "Необходим токен доступа Bearer.")
 
     def test_guests_cannot_read_or_cancel_another_guests_booking(self) -> None:
         payload = {

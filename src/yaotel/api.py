@@ -81,12 +81,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if not secret or len(secret.encode("utf-8")) < 32:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="User authentication is not configured.",
+                detail="Аутентификация пользователей не настроена.",
             )
         if runtime_settings.access_token_minutes <= 0:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Access token lifetime is not configured.",
+                detail="Не настроен срок действия токена доступа.",
             )
         return secret
 
@@ -98,12 +98,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if not expected:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="API access is not configured.",
+                detail="Доступ к API не настроен.",
             )
         if not x_api_key or not hmac.compare_digest(x_api_key, expected):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Missing or invalid API key.",
+                detail="Отсутствует или недействителен ключ API.",
             )
 
     def get_current_user(
@@ -116,7 +116,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if credentials is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="A bearer access token is required.",
+                detail="Необходим токен доступа Bearer.",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         user_id = get_token_user_id(credentials.credentials, secret)
@@ -124,7 +124,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if user is None or not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="The access token is invalid or expired.",
+                detail="Токен доступа недействителен или срок его действия истек.",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         return user
@@ -150,7 +150,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             session.rollback()
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="An account with this email already exists.",
+                detail="Аккаунт с таким адресом электронной почты уже существует.",
             ) from exc
         session.refresh(user)
         return UserRead.model_validate(user)
@@ -169,7 +169,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Email or password is incorrect.",
+                detail="Неверный адрес электронной почты или пароль.",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         return TokenResponse(
@@ -239,10 +239,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 guests=request.guests,
             )
         except RoomNotFound as exc:
-            raise HTTPException(status_code=404, detail="Room not found.") from exc
+            raise HTTPException(status_code=404, detail="Номер не найден.") from exc
         except BookingConflict as exc:
             raise HTTPException(
-                status_code=409, detail="Room is not available for these dates."
+                status_code=409, detail="Номер недоступен на выбранные даты."
             ) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -289,11 +289,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             booking = BookingService(session).get_user_booking(booking_id, current_user.id)
         except BookingNotFound as exc:
-            raise HTTPException(status_code=404, detail="Booking not found.") from exc
+            raise HTTPException(status_code=404, detail="Бронирование не найдено.") from exc
         except BookingNotOwned as exc:
             raise HTTPException(
                 status_code=403,
-                detail="This booking belongs to another guest.",
+                detail="Это бронирование принадлежит другому гостю.",
             ) from exc
         return BookingRead.model_validate(booking)
 
@@ -311,16 +311,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             BookingService(session).cancel_booking(booking_id, current_user.id)
         except BookingNotFound as exc:
-            raise HTTPException(status_code=404, detail="Booking not found.") from exc
+            raise HTTPException(status_code=404, detail="Бронирование не найдено.") from exc
         except BookingNotOwned as exc:
             raise HTTPException(
                 status_code=403,
-                detail="This booking belongs to another guest.",
+                detail="Это бронирование принадлежит другому гостю.",
             ) from exc
         except BookingStateConflict as exc:
             raise HTTPException(
                 status_code=409,
-                detail="This booking cannot be cancelled in its current state.",
+                detail="Бронирование нельзя отменить в текущем состоянии.",
             ) from exc
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 

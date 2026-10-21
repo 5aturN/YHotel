@@ -15,7 +15,7 @@ class UserCreate(BaseModel):
     def normalize_email(cls, value: str) -> str:
         normalized = value.strip().lower()
         if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", normalized):
-            raise ValueError("A valid email address is required.")
+            raise ValueError("Укажите корректный адрес электронной почты.")
         return normalized
 
 
@@ -28,7 +28,7 @@ class LoginRequest(BaseModel):
     def normalize_email(cls, value: str) -> str:
         normalized = value.strip().lower()
         if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", normalized):
-            raise ValueError("A valid email address is required.")
+            raise ValueError("Укажите корректный адрес электронной почты.")
         return normalized
 
 
@@ -55,7 +55,7 @@ class BookingCreate(BaseModel):
     @model_validator(mode="after")
     def validate_stay(self) -> "BookingCreate":
         if self.check_out <= self.check_in:
-            raise ValueError("Check-out date must be later than check-in date.")
+            raise ValueError("Дата выезда должна быть позже даты заезда.")
         return self
 
 
